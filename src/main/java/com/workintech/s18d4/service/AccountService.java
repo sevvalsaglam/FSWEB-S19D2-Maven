@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AccountService {
     Account save(Account account);
-    Account find(Long id);
+    Account find(long id);
     List<Account> findAll();
-    Account delete(Long id);
+    Account delete(long id);
 }

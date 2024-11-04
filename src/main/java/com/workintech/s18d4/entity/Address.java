@@ -1,18 +1,20 @@
 package com.workintech.s18d4.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "address", schema = "fsweb")
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name="address", schema = "s19d2")
+@AllArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private Long id;
+    private long id;
 
     @Column(name="street")
     private String street;
@@ -21,7 +23,7 @@ public class Address {
     private String city;
 
     @Column(name="no")
-    private String no;
+    private Integer no;
 
     @Column(name="country")
     private String country;
@@ -29,7 +31,7 @@ public class Address {
     @Column(name="description")
     private String description;
 
-    @OneToOne(mappedBy = "address", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "address", cascade = {CascadeType.DETACH,CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REFRESH})
     private Customer customer;
 
 

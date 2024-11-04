@@ -3,24 +3,31 @@ package com.workintech.s18d4.controller;
 import com.workintech.s18d4.dto.CustomerResponse;
 import com.workintech.s18d4.entity.Customer;
 import com.workintech.s18d4.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+
+    @GetMapping
+    public List<Customer> getAll(){
+        return customerService.findAll();
+    }
+    @GetMapping("/{id}")
+    public Customer get(@PathVariable Long id){
+        return customerService.find(id);
+    }
 
     @PostMapping
-    public ResponseEntity<CustomerResponse> saveCustomer(@RequestBody Customer customer) {
-        Customer savedCustomer = customerService.save(customer);
-        CustomerResponse response = new CustomerResponse(savedCustomer.getId(), savedCustomer.getEmail(), savedCustomer.getSalary());
-        return ResponseEntity.ok(response);
+    public CustomerResponse saveCustomer(@RequestBody Customer customer) {
+        Customer saved= this.customerService.save(customer);
+        return new CustomerResponse(saved.getId(), saved.getEmail(), saved.getSalary());
     }
 }

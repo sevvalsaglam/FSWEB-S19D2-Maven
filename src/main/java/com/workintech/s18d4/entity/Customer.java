@@ -1,21 +1,25 @@
 package com.workintech.s18d4.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "customer", schema = "fsweb")
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name="customer", schema = "fsweb")
+@AllArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private Long id;
+    private long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -30,9 +34,10 @@ public class Customer {
     private Double salary;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "address_id")
     private Address address;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Account> accounts;
+    private List<Account> accounts=new ArrayList<>();
 }
